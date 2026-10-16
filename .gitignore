@@ -6,3 +6,9 @@ _work/
 *.dylib
 *.jnilib
 __pycache__/
+
+# CI-fetched runtime assets (not committed)
+ios/web/lib/
+ios/web/model/
+ios/Ipad2D.xcodeproj/
+ios/build/

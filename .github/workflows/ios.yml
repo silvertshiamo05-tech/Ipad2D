@@ -23,6 +23,21 @@ jobs:
       - name: Install XcodeGen
         run: brew install xcodegen
 
+      - name: Fetch runtime libs + free sample model (redistributable; not committed)
+        working-directory: ios
+        run: |
+          set -e
+          mkdir -p web/lib web/model
+          # Official Cubism Web Core + MIT renderer libs
+          curl -fSL -o web/lib/live2dcubismcore.min.js https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js
+          curl -fSL -o web/lib/pixi.min.js            https://cdnjs.cloudflare.com/ajax/libs/pixi.js/6.5.10/browser/pixi.min.js
+          curl -fSL -o web/lib/cubism4.min.js         https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js
+          # Official FREE sample model (Live2D Free Material License)
+          curl -fSL -o /tmp/hiyori.zip https://cubism.live2d.com/sample-data/bin/hiyori/hiyori_en.zip
+          (cd /tmp && unzip -oq hiyori.zip)
+          cp -R "/tmp/hiyori_free/runtime/." web/model/
+          echo "web/ bundle contents:" && find web -maxdepth 2 | sort
+
       - name: Generate Xcode project
         working-directory: ios
         run: xcodegen generate

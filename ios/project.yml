@@ -21,6 +21,8 @@ targets:
     deploymentTarget: "15.0"
     sources:
       - path: Sources
+      - path: web
+        type: folder   # folder reference → copied into the bundle as web/ (index.html, lib/, model/)
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.ipad2d.app

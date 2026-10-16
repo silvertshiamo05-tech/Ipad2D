@@ -54,11 +54,35 @@ route delivers the actual goal — opening your existing Live2D projects in an
 editor that has no RLM licence gate — unlike the original editor, which stops
 at licence init on iPad (see `docs/LICENSE-DIAGNOSIS.md`).
 
+## Broadened coverage (2026-10-16, follow-up)
+
+Round-tripped four more official free samples (from Live2D's sample-data CDN,
+Free Material License), `.cmo3 → .cmo3` semantic `diff`:
+
+| Model | `.cmo3` | Round-trip |
+|---|---|---|
+| Hiyori (free + pro) | 10.1 / 28.9 MB | **identical** |
+| Mao (pro) | 70.5 MB | **identical** |
+| Natori (pro) | 19.0 MB | **identical** |
+| Rice (pro) | 10.6 MB | **identical** |
+| Mark (free) | 1.2 MB | **identical** |
+
+Six project files across free and pro tiers, all lossless — the compatibility
+result is not specific to one model.
+
+### Screenshots
+
+`render_models.mjs` renders each model from its runtime files using the
+**official** Cubism Web Core + pixi-live2d-display under headless Chromium
+(Playwright), served locally. These confirm the downloaded samples are intact,
+good-quality models (the screenshots shared in-chat). This renderer is the
+official runtime, separate from Umamo — it is for producing previews, not part
+of the editor path.
+
 ## Honest limits of this experiment
 
-* Tested one model family (Hiyori free + pro). Broader coverage (more models,
-  more Cubism versions) would harden the claim; Umamo states `.cmo3`/`.moc3`
-  support "up to Cubism 5.4".
+* Covered the Hiyori/Mao/Natori/Rice/Mark samples. Still worth widening to more
+  Cubism versions; Umamo states `.cmo3`/`.moc3` support "up to Cubism 5.4".
 * This validates the **codec/`:cli`**, not the **editor UI** and not **iPad**.
   Umamo's own status: iPadOS "Application and UI loads, but there is no puppet
   renderer and JDOM is incompatible." Those two gaps — a GLES puppet renderer

@@ -24,6 +24,11 @@ struct Live2DCanvas: UIViewRepresentable {
     func makeUIView(context: Context) -> WKWebView {
         let cfg = WKWebViewConfiguration()
         cfg.allowsInlineMediaPlayback = true
+        // The model loader fetch()es sibling files (moc3, textures) next to
+        // index.html. WKWebView blocks file:// fetches by default, so allow
+        // local file access (fine for a bundled, offline, personal app).
+        cfg.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+        cfg.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
         let web = WKWebView(frame: .zero, configuration: cfg)
         web.isOpaque = false
         web.backgroundColor = .clear

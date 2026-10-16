@@ -1,0 +1,60 @@
+name: iOS build (unsigned IPA)
+
+# Builds the iPad app on a GitHub-hosted macOS runner and uploads an UNSIGNED
+# .ipa artifact. Install it on an iPad with AltStore/SideStore (which signs it
+# on-device with a free Apple ID). No Mac required to produce or install it.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'ios/**'
+      - '.github/workflows/ios.yml'
+
+jobs:
+  build:
+    runs-on: macos-14
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: xcodebuild -version && swift --version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        working-directory: ios
+        run: xcodegen generate
+
+      - name: Build & archive (unsigned)
+        working-directory: ios
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project Ipad2D.xcodeproj \
+            -scheme Ipad2D \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/Ipad2D.xcarchive \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            archive | xcpretty || xcodebuild \
+            -project Ipad2D.xcodeproj -scheme Ipad2D -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath build/Ipad2D.xcarchive \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" archive
+
+      - name: Package unsigned IPA
+        working-directory: ios
+        run: |
+          APP=$(ls -d build/Ipad2D.xcarchive/Products/Applications/*.app | head -1)
+          echo "app bundle: $APP"
+          rm -rf build/Payload && mkdir -p build/Payload
+          cp -R "$APP" build/Payload/
+          (cd build && zip -qry Ipad2D-unsigned.ipa Payload)
+          ls -lh build/Ipad2D-unsigned.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Ipad2D-unsigned-ipa
+          path: ios/build/Ipad2D-unsigned.ipa
+          if-no-files-found: error

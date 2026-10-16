@@ -21,6 +21,9 @@ original editor needs Live2D's involvement.
 | `tools/desktop_coupling.py` | per-package AWT/Swing/JOGL/JavaFX/RLM coupling from `jdeps` output |
 | `experiments/01-jvm-portability/` | run the original editor bytecode on Linux with JOGL Linux natives |
 | `experiments/02-umamo-cmo3-roundtrip/` | build Umamo's CLI and prove it round-trips a real `.cmo3` (experiment 02) |
+| `ios/` | iPad app (SwiftUI shell + hybrid Live2D canvas) built to an unsigned IPA by GitHub Actions |
+| `.github/workflows/ios.yml` | macOS CI: builds + packages the unsigned `.ipa` artifact |
+| `docs/INSTALL.md` | how to sign/install the IPA on your iPad (TrollStore / SideStore) |
 
 Proprietary Live2D files are never committed (`.gitignore`); everything is
 extracted into `_work/`.

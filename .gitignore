@@ -1,0 +1,8 @@
+# Proprietary Live2D files and extraction output never go into git.
+_work/
+*.pkg
+*.dmg
+*.jar
+*.dylib
+*.jnilib
+__pycache__/

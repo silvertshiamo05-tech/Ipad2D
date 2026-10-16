@@ -8,7 +8,7 @@
 #   workdir  default ./_work (git-ignored)
 set -euo pipefail
 VER="${1:-5.3.04}"
-WORK="${2:-$(pwd)/_work}"
+WORK="${2:-_work}"; mkdir -p "$WORK"; WORK="$(cd "$WORK" && pwd)"
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 PKG="$WORK/dl/Live2D_Cubism_Setup_${VER}_arm64.pkg"
 

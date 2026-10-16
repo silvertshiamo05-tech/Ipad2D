@@ -20,6 +20,7 @@ original editor needs Live2D's involvement.
 | `tools/inspect_macho.py` | Mach-O platform / min-OS / linked frameworks / JNI exports (needs `pip install lief`) |
 | `tools/desktop_coupling.py` | per-package AWT/Swing/JOGL/JavaFX/RLM coupling from `jdeps` output |
 | `experiments/01-jvm-portability/` | run the original editor bytecode on Linux with JOGL Linux natives |
+| `experiments/02-umamo-cmo3-roundtrip/` | build Umamo's CLI and prove it round-trips a real `.cmo3` (experiment 02) |
 
 Proprietary Live2D files are never committed (`.gitignore`); everything is
 extracted into `_work/`.
